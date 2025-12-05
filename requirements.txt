@@ -1,0 +1,12 @@
+gradio
+torch
+transformers
+accelerate
+sentencepiece
+faster-whisper
+pydub
+numpy
+pillow
+pypdf2
+faiss-cpu            # si tu prends vector RAG
+llama-index          # si plan B
