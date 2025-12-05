@@ -1,0 +1,22 @@
+[
+  {
+    "source": "node_amh_low",
+    "target": "node_age_over_35",
+    "relation": "often_associated_with"
+  },
+  {
+    "source": "node_amh_low",
+    "target": "node_lifestyle_changes",
+    "relation": "leads_to_recommendation"
+  },
+  {
+    "source": "node_pcos",
+    "target": "node_lifestyle_changes",
+    "relation": "management_includes"
+  },
+  {
+    "source": "node_pcos",
+    "target": "node_amh_normal",
+    "relation": "can_coexist_with"
+  }
+]

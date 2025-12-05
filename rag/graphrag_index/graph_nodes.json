@@ -1,0 +1,32 @@
+[
+  {
+    "id": "node_amh_low",
+    "label": "Low AMH",
+    "type": "biomarker",
+    "description": "Anti-Müllerian hormone levels below age-specific average, associated with reduced ovarian reserve."
+  },
+  {
+    "id": "node_amh_normal",
+    "label": "Normal AMH",
+    "type": "biomarker",
+    "description": "AMH values within the expected range for age."
+  },
+  {
+    "id": "node_pcos",
+    "label": "PCOS",
+    "type": "condition",
+    "description": "Polycystic ovary syndrome; can be associated with irregular cycles and specific hormone patterns."
+  },
+  {
+    "id": "node_age_over_35",
+    "label": "Age > 35",
+    "type": "risk_factor",
+    "description": "Age bracket where average ovarian reserve and egg quality start to decline faster."
+  },
+  {
+    "id": "node_lifestyle_changes",
+    "label": "Lifestyle & Medical follow-up",
+    "type": "recommendation",
+    "description": "General advice: weight management, metabolic screening, personalised medical follow-up."
+  }
+]
