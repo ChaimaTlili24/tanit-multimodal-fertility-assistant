@@ -1,0 +1,151 @@
+/* ===========================
+   GLOBAL
+   =========================== */
+
+/* Fond global très léger, tirant vers le violet */
+body {
+    background: #f8f5ff;
+}
+
+/* Police générale */
+.gradio-container {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    color: #3b2c63;
+}
+
+/* ===========================
+   HEADER TANIT.AI
+   =========================== */
+
+/* Bandeau header */
+#tanit-header-row {
+    background: linear-gradient(90deg, #00c4b3, #6a4bbf);
+    color: #ffffff;
+    padding: 18px 24px;
+    border-radius: 16px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
+
+/* On enlève l'effet "carte" sur les colonnes du header */
+#tanit-header-row .gradio-column {
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+}
+
+/* Logo */
+.tanit-logo {
+    width: 90px;
+    height: 90px;
+    border-radius: 18px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Textes header */
+.tanit-title-main {
+    font-size: 22px;
+    font-weight: 650;
+}
+.tanit-title-sub {
+    font-size: 13px;
+    opacity: 0.95;
+}
+.tanit-title-tagline {
+    font-size: 12px;
+    opacity: 0.9;
+    margin-top: 4px;
+}
+
+/* ===========================
+   BLOCS PRINCIPAUX
+   =========================== */
+
+.gradio-container .block.gradio-row > .gradio-column {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 14px;
+    box-shadow: 0 10px 26px rgba(22, 6, 71, 0.06);
+    border: 1px solid #ebe3ff;
+}
+
+/* Titre "Entrée utilisateur" */
+.gradio-container h3 {
+    color: #4e3795;
+}
+
+/* Labels des champs */
+label {
+    font-weight: 500;
+    color: #4e3795;
+}
+
+/* Inputs texte */
+textarea, input[type="text"] {
+    border-radius: 10px !important;
+    border: 1px solid #d3c5ff !important;
+}
+
+/* ===========================
+   CHATBOT
+   =========================== */
+
+.gr-chatbot {
+    border-radius: 12px !important;
+    background: #f4efff !important;
+    border: 1px solid #e1d6ff !important;
+}
+
+/* Messages utilisateur */
+.gr-chatbot .message.user {
+    background: #e8dcff !important;
+    border-color: #c6b1ff !important;
+}
+
+/* Messages assistant */
+.gr-chatbot .message.bot {
+    background: #ffffff !important;
+    border-color: #e0daf7 !important;
+}
+
+/* ===========================
+   BOUTONS
+   =========================== */
+
+/* Bouton principal (Envoyer) – on cible via l'id que tu peux mettre dans app.py */
+#submit-btn {
+    background: #6a4bbf !important;
+    border-color: #6a4bbf !important;
+    color: #ffffff !important;
+    border-radius: 999px !important;
+    font-weight: 600;
+}
+#submit-btn:hover {
+    background: #5536a0 !important;
+}
+
+/* Bouton secondaire (Effacer) */
+#clear-btn {
+    background: #ffffff !important;
+    border-color: #6a4bbf !important;
+    color: #6a4bbf !important;
+    border-radius: 999px !important;
+    font-weight: 500;
+}
+#clear-btn:hover {
+    background: #f0e9ff !important;
+}
+
+/* ===========================
+   DIVERS
+   =========================== */
+
+/* Légère accentuation du séparateur côté droit */
+.gradio-container .block.gradio-row > .gradio-column:last-child {
+    border-left: 3px solid #f0e6ff;
+}

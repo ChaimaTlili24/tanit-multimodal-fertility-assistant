@@ -1,11 +1,15 @@
 import gradio as gr
 from typing import List, Dict, Any, Optional
+from pathlib import Path
 
 from voice.stt import transcribe_audio
 from rag.rag import retrieve_context
 
 from vlm import analyze_image, analyze_pdf
 
+# Charger le CSS depuis assets/style.css
+CSS_PATH = Path(__file__).parent / "assets" / "style.css"
+custom_css = CSS_PATH.read_text(encoding="utf-8")
 
 # ==============================
 #  STUBS / PLACEHOLDERS BACKEND
@@ -150,26 +154,56 @@ def chat_pipeline(
 # ==============================
 
 def build_interface():
-    with gr.Blocks(title="Tanit Multimodal Fertility Assistant") as demo:
+    with gr.Blocks(
+        title="Tanit Multimodal Fertility Assistant",
+    ) as demo:
+
+        # === Injection du CSS custom depuis assets/style.css ===
+        gr.Markdown(
+            f"<style>{custom_css}</style>",
+            visible=True,
+        )
+
+        # === Header branding Tanit.ai ===
+        with gr.Row(elem_id="tanit-header-row"):
+            with gr.Column(scale=1):
+                gr.Image(
+                    value="assets/logo.png",   # chemin du logo
+                    show_label=False,
+                    interactive=False,
+                    container=False,          # pas de cadre
+                    elem_classes="tanit-logo",
+                )
+            with gr.Column(scale=5):
+                gr.Markdown(
+                    """
+                    <div class="tanit-title-main">Tanit.ai – Fertility Companion</div>
+                    <div class="tanit-title-sub">Your personal companion towards parenthood.</div>
+                    <div class="tanit-title-tagline">
+                        Assistant multimodal (texte · voix · documents) pour accompagner les patientes
+                        en fertilité, avec un ton chaleureux et médicalement prudent.
+                    </div>
+                    """,
+                )
+
+        # === Avertissement médical ===
         gr.Markdown(
             """
-            # 🧬 Tanit Multimodal Fertility Assistant (Prototype)
-
-            Assistant multimodal pour accompagner les patientes en fertilité :
-            texte, voix, images médicales et documents.
-
             > ⚠️ **Attention :** Ce prototype est strictement éducatif.  
-            > Il ne remplace en aucun cas un avis médical professionnel.
+            > Il ne remplace en aucun cas un avis médical professionnel, un diagnostic ou une prescription.
             """
         )
 
+        # === Layout principal : chat à gauche, entrées à droite ===
         with gr.Row():
+            # Colonne gauche : chatbot
             with gr.Column(scale=3):
                 chatbot = gr.Chatbot(
                     label="Conversation",
                     height=500,
                 )
 
+            # Colonne droite : entrées utilisateur
             with gr.Column(scale=1):
                 gr.Markdown("### Entrée utilisateur")
 
@@ -195,17 +229,18 @@ def build_interface():
                     file_types=[".pdf"],
                 )
 
-                submit_btn = gr.Button("Envoyer")
-                clear_btn = gr.Button("Effacer la conversation")
+                submit_btn = gr.Button("Envoyer", elem_id="submit-btn")
+                clear_btn = gr.Button("Effacer la conversation", elem_id="clear-btn")
 
-        # Bouton "Envoyer"
+
+        # === Bouton "Envoyer" ===
         submit_btn.click(
             fn=chat_pipeline,
             inputs=[chatbot, text_input, audio_input, image_input, pdf_input],
             outputs=[chatbot, text_input, audio_input, image_input, pdf_input],
         )
 
-        # Bouton "Effacer"
+        # === Bouton "Effacer" ===
         def clear_all():
             return [], "", None, None, None
 
@@ -216,6 +251,8 @@ def build_interface():
         )
 
     return demo
+
+
 
 
 if __name__ == "__main__":
