@@ -2,19 +2,3 @@
 venv/
 .env/
 .venv/
-
-# Python cache
-__pycache__/
-*.pyc
-
-# VS Code
-.vscode/
-
-# Environment files
-*.env
-
-# macOS files
-.DS_Store
-
-# Windows files
-Thumbs.db
