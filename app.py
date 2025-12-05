@@ -2,6 +2,9 @@ import gradio as gr
 from typing import List, Dict, Any, Optional
 
 from voice.stt import transcribe_audio
+from rag.rag import retrieve_context
+
+from vlm import analyze_image, analyze_pdf
 
 
 # ==============================
@@ -17,44 +20,64 @@ def simple_stt_transcribe(audio_path: Optional[str]) -> str:
     return transcribe_audio(audio_path)
 
 
-def simple_image_analysis(image_path: Optional[str]) -> str:
+def simple_image_analysis(image_path: Optional[str], user_text: str) -> str:
     """
-    Stub temporaire pour l'analyse d'image.
-    Plus tard : remplacé par Qwen3-VL-4B-Instruct (VLM).
+    Wrapper autour de vlm.analyze_image().
     """
-    if image_path is None:
-        return ""
-    return "[Résumé simulé de l'image médicale]"
+    return analyze_image(image_path, user_text or "")
 
 
-def simple_pdf_analysis(pdf_path: Optional[str]) -> str:
+def simple_pdf_analysis(pdf_path: Optional[str], user_text: str) -> str:
     """
-    Stub temporaire pour l'analyse de PDF.
-    Plus tard : extraction pages + VLM ou RAG dessus.
+    Wrapper autour de vlm.analyze_pdf().
     """
-    if pdf_path is None:
-        return ""
-    return "[Résumé simulé du PDF médical]"
+    return analyze_pdf(pdf_path, user_text or "")
+
 
 
 def simple_rag_answer(user_text: str, extra_context: str) -> str:
     """
-    Stub temporaire pour le RAG + LLM.
-    Plus tard : remplacé par (GraphRAG ou RAG vectoriel) + Qwen3-4B-Instruct.
+    Combine :
+    - contexte RAG (en utilisant le texte s'il existe, sinon le contexte multimodal),
+    - contexte multimodal (voix / image / PDF),
+    - et prépare un message final plus propre.
     """
     base_disclaimer = (
         "⚕️ *Je suis un assistant éducatif sur la fertilité et je ne remplace pas un médecin.*\n"
         "Pour toute décision médicale ou traitement, consulte toujours un professionnel de santé.\n\n"
     )
 
+    # Si l'utilisateur n'a pas écrit de texte, on essaie d'utiliser le contexte multimodal
+    rag_input = (user_text or "").strip()
+    if not rag_input and extra_context:
+        rag_input = extra_context
+
+    # Contexte RAG (simple pour l'instant)
+    rag_context = retrieve_context(rag_input or "")
+
+    # Texte affiché dans "Ta question :"
+    if user_text and user_text.strip():
+        question_block = f"**Ta question :** {user_text}"
+    elif extra_context:
+        question_block = (
+            "**Ta question :** [pas de texte, mais tu as envoyé un document "
+            "que j'analyse en me basant sur son contenu et le contexte médical.]"
+        )
+    else:
+        question_block = "**Ta question :** [aucun contenu reçu]"
+
     response = (
-        "Merci pour ta question. Voici une réponse simulée (le back-end RAG/LLM "
-        "n'est pas encore branché) :\n\n"
-        f"**Ta question :** {user_text or '[vide]'}\n\n"
-        f"**Contexte reçu (audio/image/PDF) :** {extra_context or '[aucun]'}"
+        f"{base_disclaimer}"
+        f"**Contexte médical (RAG) :** {rag_context}\n\n"
+        f"{question_block}\n\n"
+        f"**Contexte multimodal (audio/image/PDF) :** {extra_context or '[aucun]'}\n\n"
+        "💡 *Cette réponse est une explication générale basée sur des recommandations "
+        "éducatives. Elle ne remplace pas une consultation individuelle.*"
     )
 
-    return base_disclaimer + response
+    return response
+
+
 
 
 # ==============================
@@ -81,11 +104,12 @@ def chat_pipeline(
     # 1) Transcription audio (STT réel)
     transcribed = simple_stt_transcribe(user_audio)
 
-    # 2) Analyse image (stub)
-    image_summary = simple_image_analysis(user_image)
+        # 2) Analyse image (via VLM stub pour l'instant)
+    image_summary = simple_image_analysis(user_image, user_text)
 
     # 3) Analyse PDF (stub)
-    pdf_summary = simple_pdf_analysis(user_pdf)
+    pdf_summary = simple_pdf_analysis(user_pdf, user_text)
+
 
     # 4) Contexte supplémentaire
     extra_parts = []
@@ -109,8 +133,6 @@ def chat_pipeline(
     # 7) Mise à jour de l'historique au format messages
     if full_user_text.strip():
         history.append({"role": "user", "content": full_user_text})
-    else:
-        history.append({"role": "user", "content": "[message vide]"})
 
     history.append({"role": "assistant", "content": assistant_message})
 
