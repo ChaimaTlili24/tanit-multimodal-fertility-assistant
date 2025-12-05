@@ -3,27 +3,27 @@ from typing import Optional
 
 def synthesize_speech(text: str, lang: str = "fr") -> Optional[str]:
     """
-    Stub TTS (Text-To-Speech).
+    Text-To-Speech (TTS) stub.
 
-    - Pour l'instant, cette fonction ne génère pas encore d'audio réel.
-    - Elle retourne simplement None.
-    - Plus tard, on pourra la remplacer par une vraie implémentation
-      (gTTS, Coqui TTS, pyttsx3, etc.) et faire retourner le chemin du
-      fichier audio généré.
+    - For now, this function does not generate any real audio.
+    - It simply returns None.
+    - Later, it can be replaced by a real implementation
+      (gTTS, Coqui TTS, pyttsx3, etc.) and return the path
+      to the generated audio file.
 
     Args:
-        text: texte à lire
-        lang: langue cible (ex: 'fr', 'en')
+        text: text to be spoken.
+        lang: target language code (e.g., "fr", "en").
 
     Returns:
-        Chemin du fichier audio généré, ou None si rien n'est fait.
+        Path to the generated audio file, or None if nothing is done.
     """
     if not text or not text.strip():
         return None
 
-    # TODO: implémenter une vraie synthèse vocale ici si besoin.
-    # Exemple futur:
-    #   - générer un .mp3 dans un fichier temporaire
-    #   - retourner le chemin de ce fichier pour que Gradio l'affiche
+    # TODO: implement real TTS here if needed.
+    # Example (future):
+    #   - generate an .mp3 in a temporary file
+    #   - return the file path so Gradio can play it
 
     return None

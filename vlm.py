@@ -1,28 +1,28 @@
 """
-vlm.py – Utilitaires pour le modèle Vision-Language (VLM)
+vlm.py – Utilities for the Vision-Language Model (VLM)
 
-Objectif :
-- Analyser des images médicales (bilans, courbes, échographies, rapports scannés)
-- Retourner un résumé textuel exploitable par le LLM / RAG.
+Goal:
+- Analyze medical images (hormone panels, cycle charts, ultrasounds, scanned reports)
+- Return a textual summary that can be used by the LLM / RAG layer.
 
-Pour l'instant :
-- On reste en mode "stub" (texte simulé),
-- Mais la structure est prête pour brancher un vrai VLM (ex: Qwen3-VL-4B-Instruct).
+For now:
+- We stay in "stub" mode (simulated text),
+- But the structure is ready to plug in a real VLM (e.g. Qwen3-VL-4B-Instruct).
 
-Tu pourras plus tard :
-- activer USE_REAL_VLM = True,
-- ajouter le code de chargement du modèle HuggingFace dans `load_vlm_model()`,
-- et implémenter la partie réelle dans `analyze_image_with_vlm()`.
+Later you can:
+- set USE_REAL_VLM = True,
+- add the HuggingFace model loading code in `load_vlm_model()`,
+- and implement the real logic in `analyze_image_with_vlm()`.
 """
 
 from typing import Optional
 
-# Toggle pour activer/désactiver le vrai VLM plus tard.
+# Toggle to enable/disable the real VLM in the future.
 USE_REAL_VLM = False
 
 
 # ==============================
-#     CHARGEMENT DU VLM
+#     VLM LOADING
 # ==============================
 
 _vlm_model = None
@@ -31,13 +31,13 @@ _vlm_processor = None
 
 def load_vlm_model():
     """
-    Charge le modèle VLM en mémoire (à implémenter plus tard).
+    Load the VLM into memory (to be implemented later).
 
-    Exemple futur (pseudo-code) :
+    Future example (pseudo-code):
 
         from transformers import AutoModelForVision2Seq, AutoProcessor
 
-        model_name = "chemin/vers/qwen3-vl-4b-instruct"
+        model_name = "path/to/qwen3-vl-4b-instruct"
         model = AutoModelForVision2Seq.from_pretrained(model_name)
         processor = AutoProcessor.from_pretrained(model_name)
 
@@ -48,42 +48,42 @@ def load_vlm_model():
     if _vlm_model is not None and _vlm_processor is not None:
         return _vlm_model, _vlm_processor
 
-    # TODO : implémenter le chargement réel du modèle VLM ici.
-    # Pour l'instant, on laisse comme None.
+    # TODO: implement real VLM loading here.
+    # For now, we just keep them as None.
     _vlm_model, _vlm_processor = None, None
     return _vlm_model, _vlm_processor
 
 
 # ==============================
-#     ANALYSE D'IMAGE
+#     IMAGE ANALYSIS
 # ==============================
 
 def _analyze_image_stub(image_path: str, user_question: str) -> str:
     """
-    Version stub : retourne un résumé simulé.
-    Utilisée tant que USE_REAL_VLM = False.
+    Stub version: returns a simulated summary.
+    Used as long as USE_REAL_VLM = False.
     """
     return (
-        "Analyse (simulée) de l'image :\n"
-        "- Lecture approximative du document ou de l'examen.\n"
-        "- Extraction des valeurs hormonales ou des éléments clés.\n"
-        "- Ce texte est uniquement un placeholder, le vrai VLM "
-        "sera branché dans une version ultérieure."
+        "Simulated analysis of the image:\n"
+        "- Approximate reading of the document or exam.\n"
+        "- Extraction of hormone values or key elements (simulated).\n"
+        "- This text is only a placeholder; the real VLM will be connected "
+        "in a later version."
     )
 
 
 def analyze_image_with_vlm(image_path: str, user_question: str) -> str:
     """
-    Version future : utiliser un vrai VLM pour analyser l'image.
-    Pour l'instant, non implémentée.
+    Future version: use a real VLM to analyze the image.
+    For now, not implemented.
     """
     model, processor = load_vlm_model()
     if model is None or processor is None:
-        # Sécurité : si le modèle n'est pas disponible, on renvoie le stub
+        # Safety: if the model is not available, fall back to the stub.
         return _analyze_image_stub(image_path, user_question)
 
-    # TODO : implémenter l'appel réel au VLM ici.
-    # Exemple futur (pseudo-code) :
+    # TODO: implement the real VLM call here.
+    # Future example (pseudo-code):
     #
     #   inputs = processor(images=image, text=user_question, return_tensors="pt")
     #   outputs = model.generate(**inputs)
@@ -96,10 +96,10 @@ def analyze_image_with_vlm(image_path: str, user_question: str) -> str:
 
 def analyze_image(image_path: Optional[str], user_question: str) -> str:
     """
-    Point d'entrée utilisé par l'application.
-    - Si aucune image : retourne une chaîne vide.
-    - Si USE_REAL_VLM = False : utilise le stub.
-    - Sinon : utilise le vrai VLM.
+    Main entry point used by the application.
+    - If no image: returns an empty string.
+    - If USE_REAL_VLM = False: uses the stub.
+    - Otherwise: uses the real VLM.
     """
     if image_path is None:
         return ""
@@ -111,22 +111,22 @@ def analyze_image(image_path: Optional[str], user_question: str) -> str:
 
 
 # ==============================
-#     ANALYSE DE PDF (BASIQUE)
+#     BASIC PDF ANALYSIS
 # ==============================
 
 def analyze_pdf(pdf_path: Optional[str], user_question: str) -> str:
     """
-    Pour l'instant :
-    - stub simple : renvoie un texte générique.
-    - plus tard : extraction des pages importantes, éventuellement conversion
-      en images et envoi au VLM page par page.
+    For now:
+    - simple stub: returns a generic text.
+    - later: extract key pages, possibly convert them to images and send them
+      to the VLM page by page.
     """
     if pdf_path is None:
         return ""
 
     return (
-        "Analyse (simulée) du PDF : le document semble contenir un rapport ou "
-        "un bilan médical. Dans une version ultérieure, le système extraira "
-        "les pages pertinentes (bilans hormonaux, échographies, recommandations) "
-        "et les analysera avec le VLM."
+        "Simulated analysis of the PDF: the document seems to contain a report "
+        "or medical summary. In a later version, the system will extract relevant "
+        "pages (hormone panels, ultrasound reports, recommendations) and analyze "
+        "them with the VLM."
     )

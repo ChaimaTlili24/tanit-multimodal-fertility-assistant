@@ -1,45 +1,44 @@
-/* ===========================
-   GLOBAL
-   =========================== */
-
-/* Fond global très léger, tirant vers le violet */
-body {
-    background: #f8f5ff;
+/* ========= PALETTE ========= */
+:root {
+    --tanit-purple: #6a4bbf;
+    --tanit-purple-dark: #4e3795;
+    --tanit-teal: #11d0c6;
+    --tanit-bg: #f5f2fb;
 }
 
-/* Police générale */
+/* Global background */
+body {
+    background-color: var(--tanit-bg);
+}
+
+/* Main font */
 .gradio-container {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    color: #3b2c63;
 }
 
-/* ===========================
-   HEADER TANIT.AI
-   =========================== */
+/* ========= HEADER ========= */
 
-/* Bandeau header */
 #tanit-header-row {
-    background: linear-gradient(90deg, #00c4b3, #6a4bbf);
+    background: linear-gradient(90deg, var(--tanit-purple), var(--tanit-purple-dark));
     color: #ffffff;
     padding: 18px 24px;
     border-radius: 16px;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
     display: flex;
     align-items: center;
+    gap: 16px;
 }
 
-/* On enlève l'effet "carte" sur les colonnes du header */
 #tanit-header-row .gradio-column {
     background: transparent !important;
     box-shadow: none !important;
     padding: 0 !important;
 }
 
-/* Logo */
 .tanit-logo {
-    width: 90px;
-    height: 90px;
-    border-radius: 18px;
+    width: 72px;
+    height: 72px;
+    border-radius: 16px;
     overflow: hidden;
     background: rgba(255, 255, 255, 0.12);
     display: flex;
@@ -47,7 +46,6 @@ body {
     justify-content: center;
 }
 
-/* Textes header */
 .tanit-title-main {
     font-size: 22px;
     font-weight: 650;
@@ -62,90 +60,81 @@ body {
     margin-top: 4px;
 }
 
-/* ===========================
-   BLOCS PRINCIPAUX
-   =========================== */
+/* ========= MAIN CARDS ========= */
 
-.gradio-container .block.gradio-row > .gradio-column {
+.tanit-main-row {
+    gap: 16px;
+}
+
+.tanit-chat-column,
+.tanit-input-column {
     background: #ffffff;
-    border-radius: 14px;
-    padding: 14px;
-    box-shadow: 0 10px 26px rgba(22, 6, 71, 0.06);
-    border: 1px solid #ebe3ff;
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.04);
 }
 
-/* Titre "Entrée utilisateur" */
-.gradio-container h3 {
-    color: #4e3795;
+/* Slight tint for the right panel */
+.tanit-input-column {
+    border-left: 3px solid rgba(106, 75, 191, 0.25);
 }
 
-/* Labels des champs */
-label {
-    font-weight: 500;
-    color: #4e3795;
-}
+/* ========= CHATBOT ========= */
 
-/* Inputs texte */
-textarea, input[type="text"] {
-    border-radius: 10px !important;
-    border: 1px solid #d3c5ff !important;
-}
-
-/* ===========================
-   CHATBOT
-   =========================== */
-
-.gr-chatbot {
+.tanit-chatbot {
+    background: #faf7ff;
     border-radius: 12px !important;
-    background: #f4efff !important;
-    border: 1px solid #e1d6ff !important;
+    border: 1px solid rgba(106, 75, 191, 0.12);
 }
 
-/* Messages utilisateur */
-.gr-chatbot .message.user {
-    background: #e8dcff !important;
-    border-color: #c6b1ff !important;
+/* You may need to tweak selectors depending on Gradio version */
+.tanit-chatbot .message.user,
+.tanit-chatbot .bubble.user {
+    background: #e7ddff;
+    color: #2b2148;
 }
 
-/* Messages assistant */
-.gr-chatbot .message.bot {
-    background: #ffffff !important;
-    border-color: #e0daf7 !important;
+.tanit-chatbot .message.assistant,
+.tanit-chatbot .bubble.assistant {
+    background: #ffffff;
+    border-left: 3px solid var(--tanit-purple);
 }
 
-/* ===========================
-   BOUTONS
-   =========================== */
+/* ========= INPUT AREA ========= */
 
-/* Bouton principal (Envoyer) – on cible via l'id que tu peux mettre dans app.py */
+.tanit-input-column h3,
+.tanit-input-column label {
+    color: var(--tanit-purple-dark);
+}
+
+/* Audio / image / file boxes */
+.tanit-input-column .gradio-audio,
+.tanit-input-column .gradio-image,
+.tanit-input-column .gradio-file {
+    border-radius: 12px !important;
+    border: 1px dashed rgba(106, 75, 191, 0.35) !important;
+}
+
+/* ========= BUTTONS ========= */
+
+.tanit-primary-btn,
 #submit-btn {
-    background: #6a4bbf !important;
-    border-color: #6a4bbf !important;
+    background: var(--tanit-purple) !important;
+    border-color: var(--tanit-purple) !important;
     color: #ffffff !important;
-    border-radius: 999px !important;
-    font-weight: 600;
 }
+.tanit-primary-btn:hover,
 #submit-btn:hover {
-    background: #5536a0 !important;
+    background: var(--tanit-purple-dark) !important;
 }
 
-/* Bouton secondaire (Effacer) */
+.tanit-secondary-btn,
 #clear-btn {
     background: #ffffff !important;
-    border-color: #6a4bbf !important;
-    color: #6a4bbf !important;
-    border-radius: 999px !important;
-    font-weight: 500;
+    color: var(--tanit-purple) !important;
+    border: 1px solid var(--tanit-purple) !important;
 }
+.tanit-secondary-btn:hover,
 #clear-btn:hover {
-    background: #f0e9ff !important;
-}
-
-/* ===========================
-   DIVERS
-   =========================== */
-
-/* Légère accentuation du séparateur côté droit */
-.gradio-container .block.gradio-row > .gradio-column:last-child {
-    border-left: 3px solid #f0e6ff;
+    background: rgba(106, 75, 191, 0.06) !important;
 }

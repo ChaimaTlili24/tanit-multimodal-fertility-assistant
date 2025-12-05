@@ -6,18 +6,18 @@ from faster_whisper import WhisperModel
 @lru_cache(maxsize=1)
 def get_whisper_model() -> WhisperModel:
     """
-    Charge le modèle faster-whisper une seule fois (singleton).
-    Tu peux changer 'medium' en 'small' ou 'large-v3' selon les ressources.
+    Load the faster-whisper model only once (singleton pattern).
+    You can change 'medium' to 'small' or 'large-v3' depending on resources.
     """
-    # device="cpu" pour être sûr que ça tourne partout
+    # device="cpu" to make sure it runs everywhere (Kaggle / local CPU)
     model = WhisperModel("medium", device="cpu", compute_type="int8")
     return model
 
 
 def transcribe_audio(audio_path: Optional[str]) -> str:
     """
-    Transcrit un fichier audio en texte avec faster-whisper.
-    Retourne une string vide si rien à transcrire.
+    Transcribe an audio file to text using faster-whisper.
+    Returns an empty string if there is nothing to transcribe.
     """
     if audio_path is None:
         return ""

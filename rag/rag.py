@@ -1,61 +1,60 @@
 """
-RAG simple (stub) pour le prototype Tanit Multimodal Fertility Assistant.
+Simple RAG stub for the Tanit Multimodal Fertility Assistant prototype.
 
-Pour l'instant :
-- on ne charge pas encore de vrais documents,
-- on ne fait pas encore de vraie similarité sémantique.
+For now:
+- we do NOT load any real documents,
+- we do NOT compute real semantic similarity.
 
-Mais :
-- l'interface `retrieve_context(question: str) -> str` est déjà prête,
-- on pourra brancher plus tard un vrai index vectoriel ou GraphRAG
-  sans toucher au reste de l'application.
+But:
+- the interface `retrieve_context(question: str) -> str` is already stable,
+- we can later plug in a real vector index or GraphRAG
+  without changing the rest of the application.
 """
-
 
 from typing import Optional
 
 
 def retrieve_context(question: str) -> str:
     """
-    Retourne un contexte textuel basé sur la question.
+    Return a textual context snippet based on the user question.
 
-    Version actuelle : stub "intelligent" très simple.
-    Version future   : utiliser un index (FAISS, LlamaIndex, GraphRAG, etc.)
-    sur des PDF/guidelines de fertilité.
+    Current version: a very simple "smart" stub using keyword checks.
+    Future version: use a real index (FAISS, LlamaIndex, GraphRAG, etc.)
+    on fertility PDFs / clinical guidelines.
     """
 
     question_lower = (question or "").lower()
 
-    if any(word in question_lower for word in ["amh", "réserve", "reserve", "ovaire", "ovarienne"]):
+    # AMH / ovarian reserve
+    if any(word in question_lower for word in ["amh", "reserve", "réserve", "ovary", "ovarian", "ovarienne"]):
         return (
-            "Contexte (simulé) : L'AMH est un marqueur de la réserve ovarienne. "
-            "Une valeur basse suggère un stock d'ovocytes plus limité, "
-            "mais ne prédit pas à elle seule la capacité à concevoir. "
-            "Les recommandations médicales insistent sur l'interprétation globale "
-            "avec l'âge, l'historique des cycles et d'autres hormones."
+            "Simulated context: Anti-Müllerian hormone (AMH) is a marker of ovarian reserve. "
+            "Lower AMH values suggest a smaller remaining pool of eggs, but AMH alone does not "
+            "determine whether someone can conceive. Medical guidelines emphasise interpreting "
+            "AMH together with age, cycle history, ultrasound findings and other hormones."
         )
 
+    # PCOS / SOPK
     if "pcos" in question_lower or "sopk" in question_lower:
         return (
-            "Contexte (simulé) : Le SOPK (PCOS) est un syndrome fréquent associé à des "
-            "cycles irréguliers, parfois une résistance à l'insuline et une augmentation "
-            "du nombre de follicules visibles à l'échographie. "
-            "La fertilité peut être impactée mais beaucoup de patientes conçoivent avec "
-            "un suivi adapté et des ajustements de mode de vie ou traitement."
+            "Simulated context: Polycystic Ovary Syndrome (PCOS) is a common condition often "
+            "associated with irregular cycles, possible insulin resistance and an increased number "
+            "of small follicles on ultrasound. Fertility can be affected, but many patients with PCOS "
+            "do conceive with appropriate lifestyle measures and medical follow-up when needed."
         )
 
-    if "âge" in question_lower or "age" in question_lower or "ans" in question_lower:
+    # Age / years
+    if "âge" in question_lower or "age" in question_lower or "ans" in question_lower or "years" in question_lower:
         return (
-            "Contexte (simulé) : L'âge est un facteur majeur de la fertilité. "
-            "La réserve ovarienne et la qualité ovocytaire diminuent en moyenne après 35 ans, "
-            "mais il existe de grandes variations individuelles. "
-            "Les décisions médicales se basent sur l'ensemble du profil clinique."
+            "Simulated context: Age is a major factor in fertility. On average, ovarian reserve and egg "
+            "quality decline after around 35 years old, but there is large individual variation. "
+            "Clinical decisions always take into account the full picture, not age alone."
         )
 
-    # fallback très général
+    # Very general fallback
     return (
-        "Contexte (simulé) : En fertilité, l'interprétation des résultats se fait toujours "
-        "dans un cadre global (âge, antécédents, hormones, échographies, symptômes). "
-        "Aucun chiffre isolé ne suffit pour conclure. Les recommandations encouragent "
-        "une discussion personnalisée avec un spécialiste."
+        "Simulated context: In fertility, results are always interpreted in a global context "
+        "(age, medical history, hormones, ultrasound findings, symptoms). A single number on its "
+        "own is not enough to reach a conclusion. Current recommendations encourage a personalised "
+        "discussion with a fertility specialist."
     )
